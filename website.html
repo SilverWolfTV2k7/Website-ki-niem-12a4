@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website 12a4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 70px;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .running-text {
+            width: 100%;
+            overflow: hidden;
+            background-color: #007bff;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 2rem;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .running-text span {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll 10s linear infinite;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+.main-content {
+    padding: 20px;
+    display: flex; /* Sử dụng Flexbox */
+    justify-content: space-evenly; /* Dàn đều khoảng cách giữa các ô */
+    gap: 20px; /* Khoảng cách giữa các ô */
+    flex-wrap: wrap; /* Cho phép xuống dòng khi không đủ chỗ */
+}
+
+.card {
+    flex: 0 1 calc(50% - 40px); /* Chiều rộng mỗi ô là 50% trừ khoảng cách */
+    box-sizing: border-box; /* Đảm bảo padding không làm ảnh hưởng kích thước */
+}
+
+.card img {
+    width: 100%; /* Chiều rộng đầy đủ */
+    height: 200px; /* Chiều cao cố định */
+    object-fit: contain; /* Hiển thị toàn bộ ảnh, giữ tỷ lệ gốc */
+    background-color: #f0f0f0; /* Màu nền khi ảnh không lấp đầy khung */
+    border-radius: 8px; /* Bo tròn các góc */
+}
+
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            overflow: hidden;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-title {
+            background-color: #e7e9fc;
+            color: #4a4ae3;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .card-detail {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.detail-content {
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 800px; /* Increased max-width */
+    background-color: white;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.detail-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.detail-content .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#cardTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+#cardDescription {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+#cardMedia {
+    margin-bottom: 0 auto 10px;
+    text-align: center;
+}
+.modal-content {
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    background-color: white;
+    max-height: 80%;
+    overflow-y: auto;
+}
+/* Popup dành cho Card */
+.popup-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; /* Kích thước cố định của hộp thoại */
+  max-height: 90%; /* Chiều cao tối đa, chiếm tối đa 90% màn hình */
+  overflow: auto; /* Thêm thanh cuộn nếu nội dung vượt quá khung */
+  background-color: white;
+  z-index: 999;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.popup-card img {
+  max-width: 100%; /* Đảm bảo ảnh co dãn theo khung */
+  height: auto; /* Tỉ lệ ảnh không bị méo */
+  display: block;
+  margin: 0 auto; /* Căn giữa ảnh */
+}
+
+.popup-card video {
+  max-width: 100%; /* Video cũng co dãn theo khung */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Popup hiển thị ảnh nền */
+#image-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999; /* Chọn mức ưu tiên nhỏ hơn của card nếu card đang dùng 1000 */
+  background: rgba(0, 0, 0, 0.8);
+  display: none; /* Ẩn mặc định */
+  justify-content: center;
+  align-items: center;
+}
+
+#image-popup img {
+  max-width: 80%; /* Đảm bảo ảnh không quá lớn */
+  max-height: 80%; /* Giới hạn chiều cao */
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+#cardMedia img {
+    max-width: 200px; /* Giới hạn chiều ngang của ảnh */
+    max-height: 200px; /* Giới hạn chiều cao của ảnh */
+    margin: 10px auto; /* Căn giữa ảnh */
+    display: block;
+    border-radius: 8px; /* Tùy chọn: bo tròn các góc */
+}
+#cardMedia video {
+    max-width: 50%; /* Đảm bảo ảnh/video không vượt chiều ngang container */
+    max-height: 300px; /* Giới hạn chiều cao */
+    margin: 10px auto; /* Căn giữa các phần tử */
+    display: block;
+    border-radius: 8px;
+}
+#extraDescription {
+    font-size: 0.9rem;
+    color: #777;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.gallery img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 8px;
+}
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-section {
+            flex: 1;
+            text-align: center;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #333;
+            text-decoration: none;
+            margin: 5px 0;
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            color: #007bff;
+            font-size: 1.2rem;
+        }
+
+        .slogan {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #007bff;
+        }
+
+        .illustration {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .illustration img {
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-position: center;
+            background-size: cover;
+        }
+
+        /* Modal styles */
+         .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #fdf6f6;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 600px;
+        width: 90%;
+        position: relative;
+    }
+    .modal-content .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    #cardMedia img {
+        max-width: 100%;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    #cardMedia video {
+        max-width: 70%;
+        display: block;
+        margin-bottom: 0 auto 10px;
+    }
+        .close-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .close-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Thanh cuộn -->
+    <div class="running-text">
+        <span>Chào mừng bạn đến với Trang Web Lưu Giữ Kỉ Niệm Của Lớp 12a4! Hãy tận hưởng những kỉ niệm đẹp nhất.</span>
+    </div>
+
+    <!-- Tiêu đề -->
+    <header>
+        <h1>NĂM QUA 12A4 ĐÃ ĐẠT ĐƯỢC NHỮNG GÌ?</h1>
+    </header>
+
+    <!-- Ảnh minh họa -->
+<div class="cover-image" onclick="openFullScreen('anhlop12a4.jpg')">
+  <img src="anhlop12a4.jpg" alt="Ảnh nền lớp">
+  <div class="cover-text">12A4</div>
+</div>
+
+<!-- Popup để hiển thị ảnh full màn hình -->
+<div id="image-popup" class="popup" onclick="closeFullScreen()">
+  <img id="popup-img" src="" alt="Xem ảnh">
+</div>
+
+<style>
+  /* Khung ảnh bìa */
+  .cover-image {
+    width: 100%;
+    height: 312px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .cover-image img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  /* Dòng chữ nổi trên ảnh */
+  .cover-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền đen mờ */
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+
+  /* Popup full màn hình */
+  .popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .popup img {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+  }
+
+  .popup:active {
+    cursor: zoom-out;
+  }
+</style>
+
+<script>
+  // Mở ảnh full màn hình
+  function openFullScreen(imageUrl) {
+    const popup = document.getElementById('image-popup');
+    const popupImg = document.getElementById('popup-img');
+    popupImg.src = imageUrl;
+    popup.style.display = 'flex';
+  }
+
+  // Đóng ảnh full màn hình
+  function closeFullScreen() {
+    const popup = document.getElementById('image-popup');
+    popup.style.display = 'none';
+  }
+</script>
+
+
+<!-- Đoạn nhạc -->
+<div class="music-player">
+  <audio controls>
+    <source src="nhungayhomqua.mp3" type="audio/mp3">
+  </audio>
+</div>
+
+<!-- Thanh ngang "CÁC HOẠT ĐỘNG" -->
+<div class="activities-title">
+  <hr>
+  <h2>CÁC HOẠT ĐỘNG</h2>
+  <hr>
+</div>
+
+<!-- CSS -->
+<style>
+
+  /* Đoạn nhạc */
+  .music-player {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .music-player audio {
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Thanh ngang "CÁC HOẠT ĐỘNG" */
+  .activities-title {
+    text-align: center;
+    margin: 30px 0;
+  }
+
+  .activities-title h2 {
+    margin: 10px 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  .activities-title hr {
+    width: 50%;
+    border: 1px solid #007bff;
+    margin: auto;
+  }
+</style>
+    <!-- Nội dung chính -->
+    <div class="main-content">
+        <!-- Card 1 -->
+    <div class="card" 
+        data-title="Mừng Sinh Nhật Cô Chủ Nhiệm" 
+        data-description="Vào ngày 22/1/2025, lớp 12a4 đã tổ chức một buổi tiệc sinh nhật nhỏ cho cô chủ nhiệm, các bạn đã cùng nhau mua một chiếc bánh kem và một số món quà để tặng cô."
+        data-video="https://www.youtube.com/embed/SASseAW9XZQ"
+        data-extra-description="
+            <p>Các bạn đã cùng nhau chuẩn bị bánh, hoa và những món quà đặc biệt. Cảm ơn sự nhiệt tình của tất cả thành viên!</p>
+            <img src='imgsnco3.jpg' alt='Ảnh sinh nhật cô 1' width='200'>
+            <img src='imgsnco5.jpg' alt='Ảnh sinh nhật cô 2' width='200'>
+            <img src='imgsnco1.jpg' alt='Ảnh sinh nhật cô 3' width='200'>
+            <img src='imgsnco2.jpg' alt='Ảnh sinh nhật cô 4' width='200'>
+            <img src='imgsnco4.jpg' alt='Ảnh sinh nhật cô 5' width='200'>
+        ">
+        <img src="anhsinhnhatco.jpg" alt="Sinh Nhật Cô Chủ Nhiệm">
+        <div class="card-title">Mừng Sinh Nhật Cô Chủ Nhiệm</div>
+    </div>
+     <!-- Card 2 -->
+     <div class="card" 
+     data-title="Hoạt Động Vui Xuân" 
+     data-description="Vào ngày 19/1, lớp 12a4 đã tham gia 'Hoạt Động Trải Nghiệm Ươm Mầm Khởi Nghiệp-Chợ Xuân Ất Tỵ 2025' và hoạt động 'Văn Nghệ Xuân', lớp đã tập tành bán món chè bông cỏ hạt lựu và đã bán hết được 70 ly trong chưa đầy 1 tiếng. Tiếp theo đó, vào buổi chiều, lớp đã tham gia hoạt động 'Văn Nghệ Xuân', được xem múa lân và tham gia giao lưu các tiếc mục văn nghệ như múa, hát, kịch. Lớp 12a4 đã giành được giải A trong hội thi, đó là những công sức mà các bạn đã bỏ ra trong 2 tuần vất vả để dành được, đó là điều xứng đáng!!!!"
+     data-video="https://www.youtube.com/embed/yBu9wYKHNXA"
+     data-extra-description="
+         <p>Qua những chuẩn bị kĩ càng, lớp 12a4 đã tham gia hoạt động hết mình!!!</p>
+         <img src='imgchoxuan1.jpg' alt='Ảnh sinh nhật cô 1' width='200'>
+         <img src='imgchoxuan2.jpg' alt='Ảnh sinh nhật cô 2' width='200'>
+         <img src='imgmualan.jpg' alt='Ảnh sinh nhật cô 3' width='200'>
+         <img src='anhnenmua.jpg' alt='Ảnh sinh nhật cô 4' width='200'>
+         <img src='imggiainhat.jpg' alt='Ảnh sinh nhật cô 5' width='200'>
+     ">
+     <img src="anhnenmua.jpg" alt="Hoạt Động Vui Xuân">
+     <div class="card-title">Hoạt Động Vui Xuân</div>
+ </div>
+<!-- Card 3 -->
+<div class="card" 
+data-title="12a4 Tiệc Tùng" 
+data-description="Vào đầu năm, cô chủ nhiệm đã tổ chức cho lớp một buổi party cho lớp, mọi người trong lớp đã cùng nhau quẩy cực kì sung sức, đó là một kỉ niệm đáng nhớ !!! "
+data-video="https://www.youtube.com/embed/SKTqebhc5Jk"
+data-extra-description="
+    <p>Cùng lớp 12a4 quẩy hết mình</p>
+    <img src='imgtiectung3.jpg' alt='tiệc tùng 1' width='200'>
+    <img src='imgtiectung4.jpg' alt='tiệc tùng 2' width='200'>
+    <img src='imgtiectung5.jpg' alt='tiệc tùng 3' width='200'>
+    <img src='imgtiectung1.jpg' alt='tiệc tùng 4' width='200'>
+    <img src='imgtiectung2.jpg' alt='tiệc tùng 5' width='200'>
+">
+<img src="anhtiectung.jpg" alt="12a4 Tiệc Tùng">
+<div class="card-title">12a4 Tiệc Tùng</div>
+</div>
+
+ <!-- Card 4 -->
+<div class="card" 
+data-title="Hoạt Động 20/11" 
+data-description="Vào ngày 20/11, lớp 12a4 đã bí mật chuẩn bị một số món quà trước 1 ngày để dành tặng cho các thầy cô trong tuần lễ 20/11, các thầy cô rất vui khi được nhận những món quà ý nghĩa và cũng không kém ngộ nghĩnh của các bạn học sinh lớp 12a4"
+data-video="https://www.youtube.com/embed/zwJ8d8vJ5I4"
+data-extra-description="
+    <p>Những món quà tuy nhỏ những nó đem lại niềm vui cho thầy cô và các bạn học sinh</p>
+    <img src='img20111.jpg' alt='20111' width='200'>
+    <img src='img20112.jpg' alt='20112' width='200'>
+    <img src='img20113.jpg' alt='20113' width='200'>
+    <img src='img20114.jpg' alt='20114' width='200'>
+    <img src='img20115.jpg' alt='20115' width='200'>
+    <img src='img20116.jpg' alt='20116' width='200'>
+    <img src='img20117.jpg' alt='20117' width='200'>
+    <img src='img20118.jpg' alt='20118' width='200'>
+    <img src='img20119.jpg' alt='20119' width='200'>
+">
+<img src="2011.jpg" alt="Hoạt Động 20/11">
+<div class="card-title">Hoạt Động 20/11</div>
+</div>
+    </div>
+<!-- Popup hiển thị chi tiết -->
+<div id="cardDetail" class="card-detail">
+    <div class="detail-content">
+      <span class="close">&times;</span>
+      <h3 id="cardTitle">Tiêu đề chi tiết</h3>
+      <p id="cardDescription">Mô tả chính sẽ xuất hiện tại đây.</p>
+      <div id="cardMedia">
+        <!-- Ảnh hoặc video sẽ được chèn tại đây -->
+      </div>
+      <p id="extraDescription">Miêu tả bổ sung sẽ hiển thị tại đây.</p>
+    </div>
+  </div> 
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Liên hệ</h3>
+                <p>Địa chỉ: 12a4</p>
+                <p>Số điện thoại: (0903) 376-355</p>
+                <p>Email: silverwolftv2k7@gmail.com</p>
+                <p>Bài viết được thực hiện bởi Đăng, Quí, Nhựt, Phú </p>
+            </div>
+            <div class="footer-section">
+                <p class="slogan">"Đồng Hành Cùng Với Những Sự Khác Biệt."</p>
+            </div>
+            <div class="footer-section">
+                <h3>Mạng xã hội</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/SilverWolfTV2k7/" target="_blank">Facebook</a>
+                    <a href="https://x.com/SilverWolfTV2K7" target="_blank">Twitter</a>
+                    <a href="https://www.instagram.com/silverwolf2k7/" target="_blank">Instagram</a>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top: 20px; text-align: center; color: #333;">&copy; 2025 Copyright belongs to QPDN.</p>
+    </footer>
+
+<script>
+// Lấy tất cả các card
+const cards = document.querySelectorAll('.card');
+
+// Lấy modal và các phần tử bên trong
+const cardDetail = document.getElementById('cardDetail');
+const cardTitle = document.getElementById('cardTitle');
+const cardDescription = document.getElementById('cardDescription');
+const cardMedia = document.getElementById('cardMedia');
+const extraDescription = document.getElementById('extraDescription');
+const closeBtn = document.querySelector('.detail-content .close');
+
+// Thêm sự kiện click cho từng card
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        // Lấy thông tin từ data-attributes của card được click
+        const title = card.getAttribute('data-title');
+        const description = card.getAttribute('data-description');
+        const videoUrl = card.getAttribute('data-video');
+        const extraDesc = card.getAttribute('data-extra-description');
+
+        // Cập nhật nội dung cho modal
+        cardTitle.textContent = title;
+        cardDescription.textContent = description;
+        extraDescription.innerHTML = extraDesc;
+
+        // Xóa nội dung media trước đó
+        cardMedia.innerHTML = '';
+
+        // Hiển thị video nếu có
+        if (videoUrl) {
+            // Kiểm tra xem videoUrl có phải là YouTube URL không
+            if (videoUrl.includes('youtube.com/embed')) {
+                // Tạo iframe nếu là video từ YouTube
+                const iframe = document.createElement('iframe');
+                iframe.src = videoUrl;
+                iframe.width = '560';
+                iframe.height = '315';
+                iframe.frameBorder = '0';
+                iframe.allow =
+                    'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                iframe.allowFullscreen = true;
+                iframe.style.maxWidth = '100%';
+                cardMedia.appendChild(iframe);
+            } else {
+                // Nếu không phải YouTube URL, xử lý như file video trực tiếp
+                const video = document.createElement('video');
+                video.src = videoUrl;
+                video.controls = true; // Thêm điều khiển phát video
+                video.style.maxWidth = '100%';
+                video.style.marginTop = '10px';
+                cardMedia.appendChild(video);
+            }
+        }
+
+        // Hiển thị modal
+        cardDetail.style.display = 'flex';
+    });
+});
+
+// Đóng modal khi bấm vào nút "close"
+closeBtn.addEventListener('click', () => {
+    cardDetail.style.display = 'none';
+});
+
+// Đóng modal khi click ra ngoài modal-content
+window.addEventListener('click', (event) => {
+    if (event.target === cardDetail) {
+        cardDetail.style.display = 'none';
+    }
+});
+
+</script>
+</body>
+</html>
